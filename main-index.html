@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hizkia Mikayla M. - Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      /* ── PROJECT CARD ── */
+      .project-card{position:relative;border-radius:12px;overflow:hidden;cursor:pointer;background:var(--bg-panel);border:1px solid var(--border-color);transition:transform .4s ease,box-shadow .4s ease;aspect-ratio:16/10}.project-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,.6)}.project-card .card-thumb{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease,filter .4s ease}.project-card:hover .card-thumb{transform:scale(1.06);filter:brightness(.3)}.project-card .card-badge{position:absolute;top:14px;left:14px;background:rgba(255,51,51,.85);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:4px 12px;border-radius:20px;backdrop-filter:blur(6px);z-index:2;transition:opacity .3s}.project-card:hover .card-badge{opacity:0}.project-card .live-badge{position:absolute;top:14px;right:14px;background:rgba(39,201,63,.9);color:#fff;font-size:.68rem;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:4px 10px;border-radius:20px;z-index:2;display:flex;align-items:center;gap:5px;transition:opacity .3s}.project-card:hover .live-badge{opacity:0}.project-card .live-badge::before{content:'';width:6px;height:6px;background:#fff;border-radius:50%;animation:blink 1.2s infinite}@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}.project-card .card-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;opacity:0;transform:translateY(10px);transition:opacity .35s ease,transform .35s ease;z-index:3;background:linear-gradient(to top,rgba(0,0,0,.85) 0%,rgba(0,0,0,.2) 60%,transparent 100%)}.project-card:hover .card-overlay{opacity:1;transform:translateY(0)}.project-card .card-overlay h4{font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:6px;line-height:1.3}.project-card .card-overlay p{font-size:.82rem;color:rgba(255,255,255,.72);margin-bottom:16px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.card-actions{display:flex;gap:10px}.card-actions .btn-view,.card-actions .btn-detail{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:6px;font-size:.82rem;font-weight:600;text-decoration:none;cursor:pointer;border:none;font-family:inherit;transition:all .25s ease}.card-actions .btn-view{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(6px)}.card-actions .btn-view:hover{background:rgba(255,255,255,.28)}.card-actions .btn-detail{background:var(--primary-red);color:#fff;border:1px solid var(--primary-red)}.card-actions .btn-detail:hover{background:#cc2929}
+      /* ── CERT CARD ── */
+      .cert-card{background:var(--bg-panel);border:1px solid var(--border-color);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .35s ease,box-shadow .35s ease,border-color .3s}.cert-card:hover{transform:translateY(-8px);border-color:var(--primary-red);box-shadow:0 14px 36px rgba(0,0,0,.5)}.cert-thumb-wrap{position:relative;overflow:hidden;width:100%;aspect-ratio:3/4}.cert-thumb{width:100%;height:100%;object-fit:contain;background:#fff;display:block;transition:filter .35s ease}.cert-card:hover .cert-thumb{filter:brightness(.3)}.cert-hover-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;opacity:0;transition:opacity .35s ease}.cert-card:hover .cert-hover-overlay{opacity:1}.cert-zoom-icon{width:56px;height:56px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;backdrop-filter:blur(4px);transition:background .25s,transform .25s}.cert-card:hover .cert-zoom-icon{transform:scale(1.1);background:rgba(255,51,51,.5);border-color:var(--primary-red)}.cert-hover-label{font-size:.85rem;font-weight:700;color:#fff;letter-spacing:.5px}.cert-card-info{padding:16px 18px}.cert-card-info h4{color:var(--text-main);font-size:.95rem;font-weight:600;text-align:center}
+      /* ── CERT MODAL ── */
+      #cert-modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.93);backdrop-filter:blur(8px);z-index:99999}#cert-close-btn{position:fixed;top:18px;right:18px;z-index:100001;width:44px;height:44px;border-radius:50%;background:#ff3333;color:#fff;border:none;font-size:1.2rem;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,0,0,.6);transition:background .2s,transform .2s}#cert-close-btn:hover{background:#cc2929;transform:scale(1.1)}#cert-toolbar{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:100001;display:none;align-items:center;gap:8px;background:rgba(10,3,3,.9);border:1px solid #3d1414;padding:10px 20px;border-radius:40px;backdrop-filter:blur(12px);box-shadow:0 4px 20px rgba(0,0,0,.5)}#cert-zoom-pct{font-size:.82rem;font-weight:700;color:#a39595;min-width:44px;text-align:center;font-family:monospace}.cert-tool-btn{background:transparent;border:none;color:#a39595;font-size:1rem;cursor:pointer;padding:5px 9px;border-radius:6px;transition:color .2s,background .2s}.cert-tool-btn:hover{color:#f8f8f8;background:rgba(255,255,255,.1)}#cert-scroll-area{position:absolute;top:0;left:0;right:0;bottom:0;overflow:auto;padding:70px 30px 80px;box-sizing:border-box;display:flex;align-items:flex-start;justify-content:center;cursor:grab}#cert-scroll-area:active{cursor:grabbing}#cert-img{display:block;max-width:80vw;max-height:80vh;width:auto;height:auto;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.7);transform-origin:top center;transition:transform .2s ease;user-select:none;-webkit-user-drag:none;flex-shrink:0}
+      /* ── KOMENTAR ── */
+      .comments-section{margin-top:40px}.comments-title{color:var(--text-main);font-size:1.1rem;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:8px}.comment-list{display:flex;flex-direction:column;gap:16px;margin-bottom:24px}.comment-item{display:flex;gap:14px;background:rgba(255,255,255,.03);border:1px solid var(--border-color);border-radius:12px;padding:16px}.comment-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--border-color);background:#1a0a0a}.comment-avatar-placeholder{width:44px;height:44px;border-radius:50%;flex-shrink:0;border:2px solid var(--border-color);background:#1a0a0a;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:1.1rem}.comment-body{flex:1;min-width:0}.comment-meta{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}.comment-name{font-weight:700;color:var(--text-main);font-size:.92rem}.comment-admin-badge{background:var(--primary-red);color:#fff;font-size:.65rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 8px;border-radius:10px}.comment-time{font-size:.75rem;color:var(--text-muted)}.comment-text{color:var(--text-muted);font-size:.9rem;line-height:1.6}.no-comments{text-align:center;color:var(--text-muted);padding:30px 0;font-size:.9rem}.comment-loading{text-align:center;color:var(--text-muted);padding:20px 0}
+      /* ── FOTO PREVIEW ── */
+      .foto-preview-wrap{display:none;margin-top:10px}.foto-preview-wrap img{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--primary-red)}
+      /* ── LOADING STATE ── */
+      .grid-loading{text-align:center;color:var(--text-muted);padding:40px 0;grid-column:1/-1}
+    </style>
+  </head>
+  <body>
+
+
+    <!-- LOADING SCREEN -->
+    <div id="loading-screen"><h2>Loading...</h2></div>
+
+    <!-- NAVBAR -->
+    <nav id="navbar">
+      <a href="#home" class="logo">Hizkia Mikayla M.</a>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#portfolio">Portofolio</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- ═══ HOME ═══ -->
+    <section id="home" class="hero-section reveal">
+      <div class="container hero-container">
+        <div class="hero-left">
+          <h1 class="hero-title" id="home-title">Web<br />Developer</h1>
+          <h2 class="hero-subtitle" id="home-subtitle">Membangun antarmuka & basis data | Madiun</h2>
+          <p class="hero-desc" id="home-desc">Saya adalah mahasiswa Sistem Informasi yang memiliki ketertarikan besar dalam merancang antarmuka website, mengelola basis data, dan menganalisis sistem informasi untuk menciptakan solusi digital yang efisien.</p>
+          <div class="tech-stack-pills">
+            <span>HTML & CSS</span><span>Desain Web</span><span>PostgreSQL</span><span>Ms. Access</span>
+          </div>
+          <div class="hero-buttons">
+            <a href="#portfolio" class="btn btn-primary"><i class="fa-solid fa-folder"></i> Projects</a>
+            <a href="#contact" class="btn btn-outline"><i class="fa-solid fa-envelope"></i> Contact</a>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="terminal-window">
+            <div class="terminal-header">
+              <div class="dots"><span></span><span></span><span></span></div>
+              <div class="title">SYSTEM ONLINE</div><div class="subtitle">IT CORE</div>
+            </div>
+            <div class="terminal-body">
+              <div class="term-row"><span class="icon"><i class="fa-solid fa-terminal"></i></span><span>CLI Shell</span><span class="status-sync"><i class="fa-solid fa-rotate"></i> Cloud Sync</span></div>
+              <div class="term-cards">
+                <div class="t-card"><h4><i class="fa-brands fa-html5"></i> Build App</h4><div class="progress-bar"><div class="fill"></div></div></div>
+                <div class="t-card"><h4><i class="fa-solid fa-clock"></i> Runtime</h4><div class="pulse-circle"></div></div>
+              </div>
+              <div class="term-footer"><span><i class="fa-solid fa-server"></i> Server Node</span><span class="secure-badge"><i class="fa-solid fa-lock"></i> Secure</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ ABOUT ═══ -->
+    <section id="about" class="about-section reveal">
+      <div class="container">
+        <h2 class="section-heading">About Me</h2>
+        <p class="section-subheading"><i class="fa-solid fa-wand-magic-sparkles"></i> <span id="about-subheading">Menganalisis sistem dan merancang solusi digital</span></p>
+        <div class="about-content">
+          <div class="about-left">
+            <h3>Halo, Saya<br /><span>Hizkia Mikayla M.</span></h3>
+            <p id="about-desc">Saat ini saya menempuh pendidikan Sistem Informasi di Universitas PGRI Madiun (UNIPMA). Selain kuliah, saya menghabiskan waktu luang saya untuk membuat proyek koding santai, mendalami psikologi pasar, dan mempelajari arsitektur basis data relasional.</p>
+            <div class="quote-box"><i class="fa-solid fa-quote-left"></i><span id="about-quote">"Menciptakan solusi yang tidak hanya fungsional, tetapi juga memiliki struktur data yang solid."</span></div>
+            <div class="about-buttons">
+              <a id="cv-link" href="https://drive.google.com/file/d/10G3KIScej5F0SVuVlTHZLm8zrRE_-sml/view?usp=sharing" class="btn btn-primary"><i class="fa-solid fa-download"></i> Download CV</a>
+              <a href="https://hizkiamikayla.rf.gd/pemrograman-web/index2.html?i=2" class="btn btn-text" target="_blank"><i class="fa-solid fa-eye"></i> View Projects</a>
+            </div>
+          </div>
+          <div class="about-right">
+            <div class="profile-frame">
+              <img id="profile-photo" src="https://hizkiamikayla.rf.gd/profil/myself.jpg" alt="Hizkia Profile" />
+              <div class="glow-circle"></div>
+            </div>
+          </div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-box"><h4>TOTAL PROJECTS</h4><div class="stat-val"><span class="num" id="stat-projects">3</span><div class="stat-icon"><i class="fa-solid fa-folder-open"></i></div></div><p>Web, database, and design</p></div>
+          <div class="stat-box"><h4>CERTIFICATES</h4><div class="stat-val"><span class="num" id="stat-certs">2</span><div class="stat-icon"><i class="fa-solid fa-award"></i></div></div><p>Professional skills validated</p></div>
+          <div class="stat-box"><h4>YEARS OF EXPERIENCE</h4><div class="stat-val"><span class="num" id="stat-exp">1</span><div class="stat-icon"><i class="fa-solid fa-globe"></i></div></div><p>Continuous learning journey</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ PORTFOLIO ═══ -->
+    <section id="portfolio" class="portfolio-section reveal">
+      <div class="container">
+        <h2 class="section-heading">Portfolio Showcase</h2>
+        <p class="section-subheading"><i class="fa-solid fa-layer-group"></i> <span id="portfolio-subheading">Jelajahi proyek, sertifikat, dan keahlian teknis saya.</span></p>
+        <div class="portfolio-tabs">
+          <button class="tab-btn active" data-target="tab-projects"><i class="fa-solid fa-code"></i> Projects</button>
+          <button class="tab-btn" data-target="tab-certs"><i class="fa-solid fa-certificate"></i> Certificates</button>
+          <button class="tab-btn" data-target="tab-tech"><i class="fa-solid fa-cubes"></i> Tech Stack</button>
+        </div>
+        <div id="tab-projects" class="tab-content active">
+          <div class="sub-tabs">
+            <button class="sub-tab-btn active" data-sub="all">Semua</button>
+            <button class="sub-tab-btn" data-sub="web">Web Project</button>
+            <button class="sub-tab-btn" data-sub="design">Design</button>
+            <button class="sub-tab-btn" data-sub="edit">Editing</button>
+          </div>
+          <div class="project-grid" id="project-grid">
+            <div class="grid-loading"><i class="fa-solid fa-spinner fa-spin"></i> Memuat project...</div>
+          </div>
+        </div>
+        <div id="tab-certs" class="tab-content">
+          <div class="cert-grid" id="cert-grid">
+            <div class="grid-loading"><i class="fa-solid fa-spinner fa-spin"></i> Memuat sertifikat...</div>
+          </div>
+        </div>
+        <div id="tab-tech" class="tab-content">
+          <div class="tech-grid">
+            <div class="tech-item reveal-item"><i class="fa-brands fa-html5"></i><span>HTML5</span></div>
+            <div class="tech-item reveal-item"><i class="fa-brands fa-css3-alt"></i><span>CSS3</span></div>
+            <div class="tech-item reveal-item"><i class="fa-solid fa-database"></i><span>PostgreSQL</span></div>
+            <div class="tech-item reveal-item"><i class="fa-brands fa-figma"></i><span>Figma</span></div>
+            <div class="tech-item reveal-item"><i class="fa-solid fa-file-excel"></i><span>Ms. Access</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CONTACT ═══ -->
+    <section id="contact" class="contact-section reveal">
+      <div class="container">
+        <h2 class="section-heading">Hubungi Saya</h2>
+        <div class="contact-layout">
+          <div class="contact-left">
+            <div class="form-box">
+              <h3><i class="fa-solid fa-paper-plane"></i> Kirim Email</h3>
+              <form action="https://formspree.io/f/xojyyogr" method="POST">
+                <input type="text" name="Nama" placeholder="Nama Anda" required />
+                <input type="email" name="Email" placeholder="Email Anda" required />
+                <textarea name="Pesan" rows="4" placeholder="Pesan Anda" required></textarea>
+                <button type="submit" class="btn btn-primary w-100">Kirim Pesan <i class="fa-solid fa-arrow-right"></i></button>
+              </form>
+            </div>
+            <div class="connect-box reveal">
+              <h3>Mari Terkoneksi</h3>
+              <div class="social-links">
+                <a href="https://www.instagram.com/hizkia_mikaylam" target="_blank" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" target="_blank" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="https://github.com/riblezorx" target="_blank" class="social-icon"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.tiktok.com/@riblezorr?_r=1&_t=ZS-95nhML0mrcj" target="_blank" class="social-icon"><i class="fa-brands fa-tiktok"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="contact-right">
+            <div class="form-box">
+              <h3><i class="fa-solid fa-comments"></i> Tinggalkan Komentar</h3>
+              <form id="commentForm">
+                <input type="text" id="com-nama" placeholder="Nama Anda" required />
+                <textarea id="com-pesan" rows="4" placeholder="Tulis komentar Anda di sini..." required></textarea>
+                <div class="file-upload">
+                  <label for="com-foto"><i class="fa-solid fa-camera"></i> Unggah Foto Profil (Maks. 3MB)</label>
+                  <input type="file" id="com-foto" accept="image/*" onchange="previewFoto(this)" />
+                </div>
+                <div class="foto-preview-wrap" id="foto-preview-wrap">
+                  <img id="foto-preview-img" src="" alt="preview" />
+                </div>
+                <button type="submit" class="btn btn-outline w-100">Posting Komentar</button>
+                <p id="comment-status" style="font-size:.85rem;margin-top:8px;text-align:center;min-height:20px;"></p>
+              </form>
+              <!-- Daftar komentar -->
+              <div class="comments-section">
+                <p class="comments-title"><i class="fa-solid fa-comments"></i> Komentar (<span id="comment-count">0</span>)</p>
+                <div id="comment-list" class="comment-list">
+                  <div class="comment-loading"><i class="fa-solid fa-spinner fa-spin"></i> Memuat komentar...</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CERT MODAL ═══ -->
+    <div id="cert-modal-overlay">
+      <button id="cert-close-btn" onclick="certClose()"><i class="fa-solid fa-xmark"></i></button>
+      <div id="cert-toolbar">
+        <button class="cert-tool-btn" onclick="certZoom(-0.1)"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
+        <span id="cert-zoom-pct">100%</span>
+        <button class="cert-tool-btn" onclick="certZoom(0.1)"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+        <button class="cert-tool-btn" onclick="certReset()"><i class="fa-solid fa-arrows-rotate"></i></button>
+      </div>
+      <div id="cert-scroll-area">
+        <img id="cert-img" src="" alt="Sertifikat" draggable="false" />
+      </div>
+    </div>
+
+    <!-- ═══ ALL SCRIPTS ═══ -->
+    <script>
+    // ── CERT MODAL ──
+    var _cs=1,_cmin=.5,_cmax=5;
+    function openCertModal(src){var o=document.getElementById('cert-modal-overlay'),c=document.getElementById('cert-close-btn'),t=document.getElementById('cert-toolbar'),i=document.getElementById('cert-img'),s=document.getElementById('cert-scroll-area');i.src=src;_cs=1;i.style.transform='scale(1)';i.style.maxWidth='80vw';i.style.maxHeight='80vh';document.getElementById('cert-zoom-pct').textContent='100%';s.scrollTop=0;s.scrollLeft=0;o.style.display='block';c.style.display='flex';t.style.display='flex';document.body.style.overflow='hidden';}
+    function certClose(){document.getElementById('cert-modal-overlay').style.display='none';document.getElementById('cert-close-btn').style.display='none';document.getElementById('cert-toolbar').style.display='none';document.body.style.overflow='';}
+    function _ca(){var i=document.getElementById('cert-img');i.style.maxWidth=_cs>1?'none':'80vw';i.style.maxHeight=_cs>1?'none':'80vh';i.style.transform='scale('+_cs+')';document.getElementById('cert-zoom-pct').textContent=Math.round(_cs*100)+'%';}
+    function certZoom(d){_cs=Math.min(_cmax,Math.max(_cmin,Math.round((_cs+d)*10)/10));_ca();}
+    function certReset(){_cs=1;_ca();var s=document.getElementById('cert-scroll-area');s.scrollTop=0;s.scrollLeft=0;}
+    document.getElementById('cert-modal-overlay').addEventListener('click',function(e){if(e.target===this||e.target===document.getElementById('cert-scroll-area'))certClose();});
+    document.getElementById('cert-scroll-area').addEventListener('wheel',function(e){if(document.getElementById('cert-modal-overlay').style.display!=='block')return;e.preventDefault();certZoom(e.deltaY<0?.1:-.1);},{passive:false});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')certClose();});
+    (function(){var el=document.getElementById('cert-scroll-area'),dn=false,sx,sy,sl,st;el.addEventListener('mousedown',function(e){dn=true;sx=e.clientX;sy=e.clientY;sl=el.scrollLeft;st=el.scrollTop;el.style.cursor='grabbing';e.preventDefault();});window.addEventListener('mouseup',function(){dn=false;var e=document.getElementById('cert-scroll-area');if(e)e.style.cursor='grab';});window.addEventListener('mousemove',function(e){if(!dn)return;el.scrollLeft=sl-(e.clientX-sx);el.scrollTop=st-(e.clientY-sy);});})();
+
+    // ── FOTO PREVIEW ──
+    function previewFoto(input){
+      var wrap=document.getElementById('foto-preview-wrap'),img=document.getElementById('foto-preview-img');
+      if(input.files&&input.files[0]){
+        if(input.files[0].size>3*1024*1024){alert('Ukuran file terlalu besar! Maks. 3 MB.');input.value='';wrap.style.display='none';return;}
+        var r=new FileReader();r.onload=function(e){img.src=e.target.result;wrap.style.display='block';};r.readAsDataURL(input.files[0]);
+      }
+    }
+
+    // ── LOAD SITE CONTENT ──
+    async function loadSiteContent(){
+      var map={'home_title':'home-title','home_subtitle':'home-subtitle','home_desc':'home-desc','about_subheading':'about-subheading','about_desc':'about-desc','about_quote':'about-quote','portfolio_subheading':'portfolio-subheading','stat_projects':'stat-projects','stat_certs':'stat-certs','stat_exp':'stat-exp'};
+      for(var key in map){
+        var val=await getSiteContent(key);
+        if(!val)continue;
+        var el=document.getElementById(map[key]);
+        if(!el)continue;
+        if(key==='home_title')el.innerHTML=val.replace(/\n/g,'<br>');
+        else el.textContent=val;
+      }
+      var photo=await getSiteContent('profile_photo_url');
+      if(photo)document.getElementById('profile-photo').src=photo;
+      var cv=await getSiteContent('cv_link');
+      if(cv)document.getElementById('cv-link').href=cv;
+    }
+
+    // ── LOAD PROJECTS ──
+    async function loadProjects(){
+      var grid=document.getElementById('project-grid');
+      try{
+        var projects=await sbGet('projects','order=id.asc');
+        if(!projects||!projects.length){grid.innerHTML='<p class="grid-loading">Belum ada project.</p>';return;}
+        grid.innerHTML=projects.map(function(p){
+          var cat=(p.category||'').toLowerCase().replace(/\s+project/,'').replace(/\s+/g,'');
+          var live=p.is_live?'<span class="live-badge">Live</span>':'';
+          return '<div class="project-card" data-category="'+cat+'">'+
+            '<img class="card-thumb" src="'+(p.thumbnail_url||'https://via.placeholder.com/600x375/1a0a0a/ff3333?text=Project')+'" alt="'+p.title+'" />'+
+            '<span class="card-badge">'+(p.category||'Project')+'</span>'+live+
+            '<div class="card-overlay"><h4>'+p.title+'</h4><p>'+(p.description||'')+'</p>'+
+            '<div class="card-actions">'+
+            '<a href="'+(p.live_url||'#')+'" target="_blank" class="btn-view"><i class="fa-solid fa-arrow-up-right-from-square"></i> View App</a>'+
+            '<a href="project-detail.html?id='+p.id+'" class="btn-detail">Details <i class="fa-solid fa-arrow-right"></i></a>'+
+            '</div></div></div>';
+        }).join('');
+      }catch(e){grid.innerHTML='<p class="grid-loading">Gagal memuat project.</p>';}
+    }
+
+    // ── LOAD CERTIFICATES ──
+    async function loadCerts(){
+      var grid=document.getElementById('cert-grid');
+      try{
+        var certs=await sbGet('certificates','order=id.asc');
+        if(!certs||!certs.length){grid.innerHTML='<p class="grid-loading">Belum ada sertifikat.</p>';return;}
+        grid.innerHTML=certs.map(function(c){
+          var imgSrc=c.img_url||'https://via.placeholder.com/400x533/f0f0f0/cc0000?text=Sertifikat';
+          return '<div class="cert-card" onclick="openCertModal(\''+imgSrc+'\')">'+
+            '<div class="cert-thumb-wrap"><img src="'+imgSrc+'" alt="'+c.title+'" class="cert-thumb" />'+
+            '<div class="cert-hover-overlay"><div class="cert-zoom-icon"><i class="fa-solid fa-magnifying-glass-plus"></i></div><span class="cert-hover-label">View Certificate</span></div></div>'+
+            '<div class="cert-card-info"><h4>'+c.title+'</h4></div></div>';
+        }).join('');
+      }catch(e){grid.innerHTML='<p class="grid-loading">Gagal memuat sertifikat.</p>';}
+    }
+
+    // ── LOAD COMMENTS ──
+    async function loadComments(){
+      var list=document.getElementById('comment-list'),countEl=document.getElementById('comment-count');
+      try{
+        var comments=await sbGet('comments','order=created_at.desc');
+        countEl.textContent=comments?comments.length:0;
+        if(!comments||!comments.length){list.innerHTML='<div class="no-comments">Belum ada komentar. Jadilah yang pertama! 😊</div>';return;}
+        list.innerHTML=comments.map(function(c){
+          var avatar=c.photo_url
+            ?'<img class="comment-avatar" src="'+c.photo_url+'" alt="'+c.name+'" />'
+            :'<div class="comment-avatar-placeholder"><i class="fa-solid fa-user"></i></div>';
+          var badge=c.is_admin?'<span class="comment-admin-badge">Admin</span>':'';
+          var date=new Date(c.created_at).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+          return '<div class="comment-item" id="comment-'+c.id+'">'+avatar+
+            '<div class="comment-body"><div class="comment-meta"><span class="comment-name">'+c.name+'</span>'+badge+'<span class="comment-time">'+date+'</span></div>'+
+            '<p class="comment-text">'+c.message+'</p></div></div>';
+        }).join('');
+      }catch(e){list.innerHTML='<div class="no-comments">Gagal memuat komentar.</div>';}
+    }
+
+    // ── SUBMIT COMMENT ──
+    async function submitComment(e){
+      e.preventDefault();
+      var btn=e.target.querySelector('button[type=submit]'),status=document.getElementById('comment-status');
+      var nama=document.getElementById('com-nama').value.trim();
+      var pesan=document.getElementById('com-pesan').value.trim();
+      var foto=document.getElementById('com-foto').files[0];
+      if(!nama||!pesan)return;
+      btn.disabled=true;btn.textContent='Mengirim...';status.textContent='';
+      var photo_url=null;
+      if(foto){
+        try{
+          var ext=foto.name.split('.').pop(),path='comments/'+Date.now()+'.'+ext;
+          var up=await fetch(SUPA_URL+'/storage/v1/object/avatars/'+path,{method:'POST',headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':foto.type},body:foto});
+          if(up.ok)photo_url=SUPA_URL+'/storage/v1/object/public/avatars/'+path;
+        }catch(err){}
+      }
+      try{
+        await sbPost('comments',{name:nama,message:pesan,photo_url:photo_url,is_admin:false});
+        status.style.color='#4ade80';status.textContent='✓ Komentar berhasil dikirim!';
+        e.target.reset();document.getElementById('foto-preview-wrap').style.display='none';
+        loadComments();
+      }catch(err){status.style.color='#ff3333';status.textContent='Gagal mengirim. Coba lagi.';}
+      btn.disabled=false;btn.textContent='Posting Komentar';
+    }
+
+    // ── INIT ──
+    document.addEventListener('DOMContentLoaded',function(){
+      var form=document.getElementById('commentForm');
+      if(form)form.addEventListener('submit',submitComment);
+      Promise.all([loadSiteContent(),loadProjects(),loadCerts(),loadComments()]);
+    });
+    </script>
+
+    <script src="supabase.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard - Hizkia Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#08020a;--panel:#120510;--red:#ff3333;--red-dark:#8a1515;--border:rgba(138,21,21,.4);--text:#f4f0f4;--muted:#8a7a8a;--green:#4ade80;--yellow:#fbbf24}
+    body{background:var(--bg);color:var(--text);font-family:'Segoe UI',sans-serif;min-height:100vh}
+      
+
+    /* ── LOGIN ── */
+    #login-screen{position:fixed;top: 0;left: 0;width: 100vw;height: 100vh;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999}
+    .login-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:40px;width:360px;text-align:center;box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
+    .login-box h2{font-size:1.5rem;font-weight:800;margin-bottom:8px}
+    .login-box p{color:var(--muted);font-size:.9rem;margin-bottom:28px}
+    .login-box input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);padding:12px 16px;border-radius:8px;font-size:.95rem;margin-bottom:12px;outline:none}
+    .login-box input:focus{border-color:var(--red)}
+    .login-box button{width:100%;background:var(--red);color:#fff;border:none;padding:13px;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;transition:background .2s}
+    .login-box button:hover{background:#cc2929}
+    #login-error{color:var(--red);font-size:.85rem;margin-top:10px;min-height:20px}
+
+    /* ── LAYOUT ── */
+    #admin-app{display:none}
+    .sidebar{position:fixed;top:0;left:0;width:240px;height:100vh;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100}
+    .sidebar-logo{padding:24px 20px;border-bottom:1px solid var(--border)}
+    .sidebar-logo h2{font-size:1.05rem;font-weight:800;color:var(--text)}
+    .sidebar-logo p{font-size:.75rem;color:var(--muted);margin-top:3px}
+    .sidebar-nav{flex:1;padding:16px 12px;display:flex;flex-direction:column;gap:4px}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:8px;cursor:pointer;color:var(--muted);font-size:.9rem;font-weight:500;transition:all .2s;border:none;background:transparent;width:100%;text-align:left}
+    .nav-item:hover{background:rgba(255,51,51,.08);color:var(--text)}
+    .nav-item.active{background:rgba(255,51,51,.15);color:var(--red)}
+    .nav-item i{width:18px;text-align:center}
+    .sidebar-footer{padding:16px 20px;border-top:1px solid var(--border)}
+    .logout-btn{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.85rem;cursor:pointer;background:transparent;border:none;width:100%;padding:8px 0;transition:color .2s}
+    .logout-btn:hover{color:var(--red)}
+
+    /* ── MAIN ── */
+    .main{margin-left:240px;padding:32px;min-height:100vh}
+    .page{display:none}.page.active{display:block}
+    .page-title{font-size:1.5rem;font-weight:800;margin-bottom:24px;display:flex;align-items:center;gap:10px}
+    .page-title i{color:var(--red)}
+
+    /* ── CARDS / PANELS ── */
+    .panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px}
+    .panel h3{font-size:1rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .panel h3 i{color:var(--red)}
+
+    /* ── FORM ELEMENTS ── */
+    .form-group{margin-bottom:16px}
+    .form-group label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:6px;font-weight:600}
+    .form-group input,.form-group textarea,.form-group select{width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);padding:10px 14px;border-radius:8px;font-size:.9rem;outline:none;font-family:inherit;transition:border-color .2s}
+    .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--red)}
+    .form-group textarea{resize:vertical;min-height:80px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .form-check{display:flex;align-items:center;gap:8px;font-size:.88rem;color:var(--muted);cursor:pointer}
+    .form-check input{width:auto}
+
+    /* ── BUTTONS ── */
+    .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .2s;text-decoration:none}
+    .btn-primary{background:var(--red);color:#fff}.btn-primary:hover{background:#cc2929}
+    .btn-outline{background:transparent;color:var(--text);border:1px solid var(--border)}.btn-outline:hover{border-color:var(--red);color:var(--red)}
+    .btn-danger{background:rgba(255,51,51,.15);color:var(--red);border:1px solid rgba(255,51,51,.3)}.btn-danger:hover{background:rgba(255,51,51,.3)}
+    .btn-success{background:rgba(74,222,128,.15);color:var(--green);border:1px solid rgba(74,222,128,.3)}.btn-success:hover{background:rgba(74,222,128,.25)}
+    .btn-sm{padding:6px 12px;font-size:.78rem}
+
+    /* ── TABLE ── */
+    .table-wrap{overflow-x:auto}
+    table{width:100%;border-collapse:collapse;font-size:.87rem}
+    th,td{padding:12px 14px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    th{color:var(--muted);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
+    tr:hover td{background:rgba(255,255,255,.02)}
+    td img{width:48px;height:48px;object-fit:cover;border-radius:6px;border:1px solid var(--border)}
+    .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+    .badge-green{background:rgba(74,222,128,.15);color:var(--green)}
+    .badge-muted{background:rgba(255,255,255,.08);color:var(--muted)}
+    .badge-red{background:rgba(255,51,51,.15);color:var(--red)}
+    .td-actions{display:flex;gap:6px}
+
+    /* ── STATUS TOAST ── */
+    #toast{position:fixed;bottom:24px;right:24px;background:var(--panel);border:1px solid var(--border);padding:14px 20px;border-radius:10px;font-size:.88rem;z-index:9999;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;max-width:300px}
+    #toast.show{opacity:1;transform:translateY(0)}
+    #toast.toast-ok{border-color:rgba(74,222,128,.5);color:var(--green)}
+    #toast.toast-err{border-color:rgba(255,51,51,.5);color:var(--red)}
+
+    /* ── MODAL FORM ── */
+    .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center}
+    .modal-bg.open{display:flex}
+    .modal-box{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:32px;width:90%;max-width:640px;max-height:90vh;overflow-y:auto}
+    .modal-box h3{font-size:1.1rem;font-weight:800;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+    .modal-box h3 i{color:var(--red)}
+    .modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:768px){
+      .sidebar{width:100%;height:auto;position:relative}
+      .main{margin-left:0}
+      .form-row{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="login-screen">
+  <div class="login-box">
+    <h2>🔐 Admin Login</h2>
+    <p>Masukkan email dan password admin</p>
+    <input type="email" id="login-email" placeholder="Email admin" />
+    <input type="password" id="login-pass" placeholder="Password admin" onkeydown="if(event.key==='Enter')doLogin()" />
+    <button id="btn-login" onclick="doLogin()">Masuk ke Dashboard</button>
+    <div id="login-error"></div>
+  </div>
+</div>
+
+<!-- ═══ ADMIN APP ═══ -->
+<div id="admin-app">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <h2>⚡ Admin Panel</h2>
+      <p>Hizkia Mikayla M.</p>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" onclick="showPage('page-home')"><i class="fa-solid fa-gauge"></i> Dashboard</button>
+      <button class="nav-item" onclick="showPage('page-content')"><i class="fa-solid fa-pen-to-square"></i> Edit Konten</button>
+      <button class="nav-item" onclick="showPage('page-projects')"><i class="fa-solid fa-folder-open"></i> Projects</button>
+      <button class="nav-item" onclick="showPage('page-certs')"><i class="fa-solid fa-certificate"></i> Sertifikat</button>
+      <button class="nav-item" onclick="showPage('page-comments')"><i class="fa-solid fa-comments"></i> Komentar</button>
+      <button class="nav-item" onclick="showPage('page-photo')"><i class="fa-solid fa-image"></i> Foto Profil</button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- ── DASHBOARD ── -->
+    <div class="page active" id="page-home">
+      <div class="page-title"><i class="fa-solid fa-gauge"></i> Dashboard</div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:24px">
+        <div class="panel" style="text-align:center"><div style="font-size:2rem;color:var(--red);margin-bottom:8px"><i class="fa-solid fa-folder-open"></i></div><div id="dash-projects" style="font-size:1.8rem;font-weight:800">—</div><div style="color:var(--muted);font-size:.85rem">Projects</div></div>
+        <div class="panel" style="text-align:center"><div style="font-size:2rem;color:var(--red);margin-bottom:8px"><i class="fa-solid fa-certificate"></i></div><div id="dash-certs" style="font-size:1.8rem;font-weight:800">—</div><div style="color:var(--muted);font-size:.85rem">Sertifikat</div></div>
+        <div class="panel" style="text-align:center"><div style="font-size:2rem;color:var(--red);margin-bottom:8px"><i class="fa-solid fa-comments"></i></div><div id="dash-comments" style="font-size:1.8rem;font-weight:800">—</div><div style="color:var(--muted);font-size:.85rem">Komentar</div></div>
+      </div>
+      <div class="panel">
+        <h3><i class="fa-solid fa-circle-info"></i> Panduan Cepat</h3>
+        <ul style="color:var(--muted);font-size:.88rem;line-height:2;padding-left:18px">
+          <li><b style="color:var(--text)">Edit Konten</b> — ubah teks di semua section (Home, About, dll)</li>
+          <li><b style="color:var(--text)">Projects</b> — tambah, edit, hapus project di portfolio</li>
+          <li><b style="color:var(--text)">Sertifikat</b> — tambah, edit, hapus sertifikat</li>
+          <li><b style="color:var(--text)">Komentar</b> — lihat dan hapus komentar dari pengunjung</li>
+          <li><b style="color:var(--text)">Foto Profil</b> — ganti URL foto profil di About Me</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ── EDIT KONTEN ── -->
+    <div class="page" id="page-content">
+      <div class="page-title"><i class="fa-solid fa-pen-to-square"></i> Edit Konten Website</div>
+      <div class="panel">
+        <h3><i class="fa-solid fa-house"></i> Section Home</h3>
+        <div class="form-group"><label>Judul (gunakan \n untuk baris baru)</label><input type="text" id="c-home_title" placeholder="Web\nDeveloper" /></div>
+        <div class="form-group"><label>Subtitle</label><input type="text" id="c-home_subtitle" /></div>
+        <div class="form-group"><label>Deskripsi</label><textarea id="c-home_desc" rows="3"></textarea></div>
+        <button class="btn btn-primary" onclick="saveContent(['home_title','home_subtitle','home_desc'])"><i class="fa-solid fa-floppy-disk"></i> Simpan Home</button>
+      </div>
+      <div class="panel">
+        <h3><i class="fa-solid fa-user"></i> Section About</h3>
+        <div class="form-group"><label>Subheading</label><input type="text" id="c-about_subheading" /></div>
+        <div class="form-group"><label>Deskripsi</label><textarea id="c-about_desc" rows="4"></textarea></div>
+        <div class="form-group"><label>Quote</label><textarea id="c-about_quote" rows="2"></textarea></div>
+        <div class="form-row">
+          <div class="form-group"><label>Total Projects (angka)</label><input type="number" id="c-stat_projects" /></div>
+          <div class="form-group"><label>Total Sertifikat (angka)</label><input type="number" id="c-stat_certs" /></div>
+          <div class="form-group"><label>Years of Experience (angka)</label><input type="number" id="c-stat_exp" /></div>
+          <div class="form-group"><label>Link CV (Google Drive)</label><input type="text" id="c-cv_link" /></div>
+        </div>
+        <button class="btn btn-primary" onclick="saveContent(['about_subheading','about_desc','about_quote','stat_projects','stat_certs','stat_exp','cv_link'])"><i class="fa-solid fa-floppy-disk"></i> Simpan About</button>
+      </div>
+      <div class="panel">
+        <h3><i class="fa-solid fa-layer-group"></i> Section Portfolio</h3>
+        <div class="form-group"><label>Subheading Portfolio</label><textarea id="c-portfolio_subheading" rows="2"></textarea></div>
+        <button class="btn btn-primary" onclick="saveContent(['portfolio_subheading'])"><i class="fa-solid fa-floppy-disk"></i> Simpan Portfolio</button>
+      </div>
+    </div>
+
+    <!-- ── PROJECTS ── -->
+    <div class="page" id="page-projects">
+      <div class="page-title"><i class="fa-solid fa-folder-open"></i> Manajemen Projects</div>
+      <button class="btn btn-primary" style="margin-bottom:20px" onclick="openProjectModal()"><i class="fa-solid fa-plus"></i> Tambah Project</button>
+      <div class="panel">
+        <div class="table-wrap">
+          <table id="projects-table">
+            <thead><tr><th>Thumbnail</th><th>Judul</th><th>Kategori</th><th>Status</th><th>Aksi</th></tr></thead>
+            <tbody id="projects-tbody"><tr><td colspan="5" style="text-align:center;color:var(--muted);padding:30px"><i class="fa-solid fa-spinner fa-spin"></i> Memuat...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SERTIFIKAT ── -->
+    <div class="page" id="page-certs">
+      <div class="page-title"><i class="fa-solid fa-certificate"></i> Manajemen Sertifikat</div>
+      <button class="btn btn-primary" style="margin-bottom:20px" onclick="openCertFormModal()"><i class="fa-solid fa-plus"></i> Tambah Sertifikat</button>
+      <div class="panel">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Gambar</th><th>Judul</th><th>Aksi</th></tr></thead>
+            <tbody id="certs-tbody"><tr><td colspan="3" style="text-align:center;color:var(--muted);padding:30px"><i class="fa-solid fa-spinner fa-spin"></i> Memuat...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── KOMENTAR ── -->
+    <div class="page" id="page-comments">
+      <div class="page-title"><i class="fa-solid fa-comments"></i> Manajemen Komentar</div>
+      <div style="display:flex;gap:10px;margin-bottom:20px">
+        <button class="btn btn-primary" onclick="openAdminCommentModal()"><i class="fa-solid fa-plus"></i> Tambah Komentar Admin</button>
+      </div>
+      <div class="panel">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Foto</th><th>Nama</th><th>Pesan</th><th>Tanggal</th><th>Aksi</th></tr></thead>
+            <tbody id="comments-tbody"><tr><td colspan="5" style="text-align:center;color:var(--muted);padding:30px"><i class="fa-solid fa-spinner fa-spin"></i> Memuat...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FOTO PROFIL ── -->
+    <div class="page" id="page-photo">
+      <div class="page-title"><i class="fa-solid fa-image"></i> Foto Profil About Me</div>
+      <div class="panel">
+        <h3><i class="fa-solid fa-link"></i> Ganti URL Foto Profil</h3>
+        <p style="color:var(--muted);font-size:.87rem;margin-bottom:16px">Masukkan URL gambar yang sudah diupload (Google Drive, Imgur, atau hosting lain). Pastikan URL berakhiran .jpg/.png dan bisa diakses publik.</p>
+        <div class="form-group"><label>URL Foto Profil Saat Ini</label><input type="text" id="c-profile_photo_url" placeholder="https://..." /></div>
+        <div id="photo-preview-admin" style="margin:16px 0;display:none"><img id="photo-preview-img-admin" src="" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:3px solid var(--red)" /></div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-outline" onclick="previewAdminPhoto()"><i class="fa-solid fa-eye"></i> Preview</button>
+          <button class="btn btn-primary" onclick="saveContent(['profile_photo_url'])"><i class="fa-solid fa-floppy-disk"></i> Simpan Foto</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /admin-app -->
+
+<!-- ══ MODAL: PROJECT FORM ══ -->
+<div class="modal-bg" id="modal-project">
+  <div class="modal-box">
+    <h3><i class="fa-solid fa-folder-open"></i> <span id="modal-project-title">Tambah Project</span></h3>
+    <input type="hidden" id="proj-id" />
+    <div class="form-row">
+      <div class="form-group"><label>Judul *</label><input type="text" id="proj-title" placeholder="Nama project" /></div>
+      <div class="form-group"><label>Kategori *</label>
+        <select id="proj-category">
+          <option value="Web Project">Web Project</option>
+          <option value="Design">Design</option>
+          <option value="Editing">Editing</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label>Deskripsi</label><textarea id="proj-desc" rows="3"></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>URL Thumbnail</label><input type="text" id="proj-thumb" placeholder="https://..." /></div>
+      <div class="form-group"><label>URL Live Demo</label><input type="text" id="proj-live" placeholder="https://..." /></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>URL GitHub</label><input type="text" id="proj-github" placeholder="https://github.com/..." /></div>
+      <div class="form-group"><label>Domain/Label</label><input type="text" id="proj-sitelabel" placeholder="contoh.com" /></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>URL Gambar Desktop</label><input type="text" id="proj-imgdesktop" placeholder="https://..." /></div>
+      <div class="form-group"><label>URL Gambar Mobile</label><input type="text" id="proj-imgmobile" placeholder="https://..." /></div>
+    </div>
+    <div class="form-group"><label>Teknologi (JSON, contoh: [{"icon":"fa-brands fa-html5","name":"HTML5"}])</label><textarea id="proj-tech" rows="2" placeholder='[{"icon":"fa-brands fa-html5","name":"HTML5"}]'></textarea></div>
+    <div class="form-group"><label>Fitur Utama (JSON, contoh: ["Fitur 1","Fitur 2"])</label><textarea id="proj-features" rows="2" placeholder='["Fitur 1","Fitur 2"]'></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label>Total Teknologi</label><input type="number" id="proj-totaltech" value="0" /></div>
+      <div class="form-group"><label>Total Fitur</label><input type="number" id="proj-totalfeat" value="0" /></div>
+    </div>
+    <label class="form-check"><input type="checkbox" id="proj-islive" /> Project sudah Live?</label>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-project')">Batal</button>
+      <button class="btn btn-primary" onclick="saveProject()"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: CERT FORM ══ -->
+<div class="modal-bg" id="modal-cert-form">
+  <div class="modal-box">
+    <h3><i class="fa-solid fa-certificate"></i> <span id="modal-cert-title">Tambah Sertifikat</span></h3>
+    <input type="hidden" id="cert-form-id" />
+    <div class="form-group"><label>Judul Sertifikat *</label><input type="text" id="cert-form-title" placeholder="Nama sertifikat" /></div>
+    <div class="form-group"><label>URL Gambar Sertifikat *</label><input type="text" id="cert-form-img" placeholder="https://..." /></div>
+    <p style="color:var(--muted);font-size:.8rem;margin-bottom:16px">💡 Upload gambar ke <a href="https://imgur.com" target="_blank" style="color:var(--red)">imgur.com</a> atau Google Drive lalu salin URL-nya.</p>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-cert-form')">Batal</button>
+      <button class="btn btn-primary" onclick="saveCert()"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: KOMENTAR ADMIN ══ -->
+<div class="modal-bg" id="modal-admin-comment">
+  <div class="modal-box">
+    <h3><i class="fa-solid fa-comment"></i> Tambah Komentar Admin</h3>
+    <div class="form-group"><label>Pesan</label><textarea id="admin-comment-msg" rows="4" placeholder="Tulis pesan sebagai admin..."></textarea></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-admin-comment')">Batal</button>
+      <button class="btn btn-primary" onclick="saveAdminComment()"><i class="fa-solid fa-paper-plane"></i> Posting</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script src="supabase.js"></script>
+
+<script>
+
+// ══════════════════════════════════════════
+// LOGIN / LOGOUT DENGAN SUPABASE
+// ══════════════════════════════════════════
+
+// Cek otomatis saat halaman dibuka: jika sudah ada token, langsung masuk
+document.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('supa_token')) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-app').style.display = 'block';
+    initDashboard();
+  }
+});
+
+async function doLogin(){
+  var email = document.getElementById('login-email').value;
+  var pass = document.getElementById('login-pass').value;
+  var btn = document.getElementById('btn-login');
+  var err = document.getElementById('login-error');
+
+  if(!email || !pass) { err.textContent = 'Isi email dan password!'; return; }
+
+  btn.textContent = 'Memeriksa...';
+  btn.disabled = true;
+  err.textContent = '';
+
+  try {
+    await sbLogin(email, pass);
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-app').style.display = 'block';
+    initDashboard();
+  } catch(e) {
+    err.textContent = 'Login gagal: Email atau Password salah.';
+  }
+  
+  btn.textContent = 'Masuk ke Dashboard';
+  btn.disabled = false;
+}
+
+function doLogout(){
+  sbLogout(); // Hapus token dari browser
+  document.getElementById('admin-app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-email').value = '';
+  document.getElementById('login-pass').value = '';
+}
+
+// ══════════════════════════════════════════
+// NAVIGASI HALAMAN
+// ══════════════════════════════════════════
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.currentTarget.classList.add('active');
+  // Load data saat buka halaman
+  if(id==='page-projects')loadProjectsTable();
+  if(id==='page-certs')loadCertsTable();
+  if(id==='page-comments')loadCommentsTable();
+  if(id==='page-content')loadContentFields();
+}
+
+// ══════════════════════════════════════════
+// TOAST NOTIFICATION
+// ══════════════════════════════════════════
+function toast(msg,ok=true){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.className='show '+(ok?'toast-ok':'toast-err');
+  setTimeout(()=>{t.className='';},3000);
+}
+
+// ══════════════════════════════════════════
+// MODAL HELPERS
+// ══════════════════════════════════════════
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function openModal(id){document.getElementById(id).classList.add('open');}
+
+// ══════════════════════════════════════════
+// DASHBOARD INIT
+// ══════════════════════════════════════════
+async function initDashboard(){
+  try{
+    const [proj,certs,comments]=await Promise.all([
+      sbGet('projects','select=id'),
+      sbGet('certificates','select=id'),
+      sbGet('comments','select=id')
+    ]);
+    document.getElementById('dash-projects').textContent=proj?proj.length:0;
+    document.getElementById('dash-certs').textContent=certs?certs.length:0;
+    document.getElementById('dash-comments').textContent=comments?comments.length:0;
+  }catch(e){}
+}
+
+// ══════════════════════════════════════════
+// EDIT KONTEN
+// ══════════════════════════════════════════
+async function loadContentFields(){
+  var keys=['home_title','home_subtitle','home_desc','about_subheading','about_desc','about_quote','stat_projects','stat_certs','stat_exp','cv_link','portfolio_subheading','profile_photo_url'];
+  for(var k of keys){
+    var val=await getSiteContent(k);
+    var el=document.getElementById('c-'+k);
+    if(el&&val)el.value=val;
+  }
+}
+async function saveContent(keys){
+  try{
+    for(var k of keys){
+      var el=document.getElementById('c-'+k);
+      if(el)await upsertContent(k,el.value);
+    }
+    toast('✓ Konten berhasil disimpan!');
+  }catch(e){toast('Gagal menyimpan: '+e.message,false);}
+}
+
+// ══════════════════════════════════════════
+// PROJECTS CRUD
+// ══════════════════════════════════════════
+async function loadProjectsTable(){
+  var tbody=document.getElementById('projects-tbody');
+  tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:30px"><i class="fa-solid fa-spinner fa-spin"></i> Memuat...</td></tr>';
+  try{
+    var data=await sbGet('projects','order=id.asc');
+    if(!data||!data.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:30px">Belum ada project.</td></tr>';return;}
+    tbody.innerHTML=data.map(p=>`
+      <tr>
+        <td><img src="${p.thumbnail_url||'https://via.placeholder.com/48x48/1a0a0a/ff3333?text=P'}" /></td>
+        <td>${p.title}</td>
+        <td><span class="badge badge-muted">${p.category||'-'}</span></td>
+        <td>${p.is_live?'<span class="badge badge-green">Live</span>':'<span class="badge badge-muted">Draft</span>'}</td>
+        <td><div class="td-actions">
+          <button class="btn btn-outline btn-sm" onclick="editProject(${p.id})"><i class="fa-solid fa-pen"></i> Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteProject(${p.id})"><i class="fa-solid fa-trash"></i></button>
+        </div></td>
+      </tr>`).join('');
+  }catch(e){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--red);padding:30px">Gagal memuat data.</td></tr>';}
+}
+
+function openProjectModal(data=null){
+  document.getElementById('modal-project-title').textContent=data?'Edit Project':'Tambah Project';
+  document.getElementById('proj-id').value=data?data.id:'';
+  document.getElementById('proj-title').value=data?data.title:'';
+  document.getElementById('proj-category').value=data?data.category:'Web Project';
+  document.getElementById('proj-desc').value=data?data.description:'';
+  document.getElementById('proj-thumb').value=data?data.thumbnail_url:'';
+  document.getElementById('proj-live').value=data?data.live_url:'';
+  document.getElementById('proj-github').value=data?data.github_url:'';
+  document.getElementById('proj-sitelabel').value=data?data.site_label:'';
+  document.getElementById('proj-imgdesktop').value=data?data.img_desktop_url:'';
+  document.getElementById('proj-imgmobile').value=data?data.img_mobile_url:'';
+  document.getElementById('proj-tech').value=data?data.technologies:'';
+  document.getElementById('proj-features').value=data?data.features:'';
+  document.getElementById('proj-totaltech').value=data?data.total_tech:0;
+  document.getElementById('proj-totalfeat').value=data?data.total_feature:0;
+  document.getElementById('proj-islive').checked=data?!!data.is_live:false;
+  openModal('modal-project');
+}
+
+async function editProject(id){
+  const data=await sbGet('projects',`id=eq.${id}`);
+  if(data&&data[0])openProjectModal(data[0]);
+}
+
+async function saveProject(){
+  var id=document.getElementById('proj-id').value;
+  var body={
+    title:document.getElementById('proj-title').value,
+    category:document.getElementById('proj-category').value,
+    description:document.getElementById('proj-desc').value,
+    thumbnail_url:document.getElementById('proj-thumb').value,
+    live_url:document.getElementById('proj-live').value,
+    github_url:document.getElementById('proj-github').value,
+    site_label:document.getElementById('proj-sitelabel').value,
+    img_desktop_url:document.getElementById('proj-imgdesktop').value,
+    img_mobile_url:document.getElementById('proj-imgmobile').value,
+    technologies:document.getElementById('proj-tech').value,
+    features:document.getElementById('proj-features').value,
+    total_tech:parseInt(document.getElementById('proj-totaltech').value)||0,
+    total_feature:parseInt(document.getElementById('proj-totalfeat').value)||0,
+    is_live:document.getElementById('proj-islive').checked
+  };
+  if(!body.title){toast('Judul project wajib diisi!',false);return;}
+  try{
+    if(id)await sbPatch('projects',id,body);
+    else await sbPost('projects',body);
+    toast(id?'✓ Project diperbarui!':'✓ Project ditambahkan!');
+    closeModal('modal-project');
+    loadProjectsTable();
+    initDashboard();
+  }catch(e){toast('Gagal: '+e.message,false);}
+}
+
+async function deleteProject(id){
+  if(!confirm('Hapus project ini? Tindakan tidak bisa dibatalkan.'))return;
+  try{await sbDelete('projects',id);toast('✓ Project dihapus.');loadProjectsTable();initDashboard();}
+  catch(e){toast('Gagal hapus: '+e.message,false);}
+}
+
+// ══════════════════════════════════════════
+// CERTIFICATES CRUD
+// ══════════════════════════════════════════
+async function loadCertsTable(){
+  var tbody=document.getElementById('certs-tbody');
+  tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--muted);padding:30px"><i class="fa-solid fa-spinner fa-spin"></i> Memuat...</td></tr>';
+  try{
+    var data=await sbGet('certificates','order=id.asc');
+    if(!data||!data.length){tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--muted);padding:30px">Belum ada sertifikat.</td></tr>';return;}
+    tbody.innerHTML=data.map(c=>`
+      <tr>
+        <td><img src="${c.img_url||'https://via.placeholder.com/48x64/f0f0f0/cc0000?text=S'}" /></td>
+        <td>${c.title}</td>
+        <td><div class="td-actions">
+          <button class="btn btn-outline btn-sm" onclick="editCert(${c.id})"><i class="fa-solid fa-pen"></i> Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteCert(${c.id})"><i class="fa-solid fa-trash"></i></button>
+        </div></td>
+      </tr>`).join('');
+  }catch(e){tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--red);padding:30px">Gagal memuat data.</td></tr>';}
+}
+
+function openCertFormModal(data=null){
+  document.getElementById('modal-cert-title').textContent=data?'Edit Sertifikat':'Tambah Sertifikat';
+  document.getElementById('cert-form-id').value=data?data.id:'';
+  document.getElementById('cert-form-title').value=data?data.title:'';
+  document.getElementById('cert-form-img').value=data?data.img_url:'';
+  openModal('modal-cert-form');
+}
+
+async function editCert(id){
+  const data=await sbGet('certificates',`id=eq.${id}`);
+  if(data&&data[0])openCertFormModal(data[0]);
+}
+
+async function saveCert(){
+  var id=document.getElementById('cert-form-id').value;
+  var body={title:document.getElementById('cert-form-title').value,img_url:document.getElementById('cert-form-img').value};
+  if(!body.title||!body.img_url){toast('Judul dan URL gambar wajib diisi!',false);return;}
+  try{
+    if(id)await sbPatch('certificates',id,body);
+    else await sbPost('certificates',body);
+    toast(id?'✓ Sertifikat diperbarui!':'✓ Sertifikat ditambahkan!');
+    closeModal('modal-cert-form');
+    loadCertsTable();
+    initDashboard();
+  }catch(e){toast('Gagal: '+e.message,false);}
+}
+
+async function deleteCert(id){
+  if(!confirm('Hapus sertifikat ini?'))return;
+  try{await sbDelete('certificates',id);toast('✓ Sertifikat dihapus.');loadCertsTable();initDashboard();}
+  catch(e){toast('Gagal hapus: '+e.message,false);}
+}
+
+// ══════════════════════════════════════════
+// COMMENTS
+// ══════════════════════════════════════════
+async function loadCommentsTable(){
+  var tbody=document.getElementById('comments-tbody');
+  tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:30px"><i class="fa-solid fa-spinner fa-spin"></i> Memuat...</td></tr>';
+  try{
+    var data=await sbGet('comments','order=created_at.desc');
+    if(!data||!data.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:30px">Belum ada komentar.</td></tr>';return;}
+    tbody.innerHTML=data.map(c=>{
+      var avatar=c.photo_url?`<img src="${c.photo_url}" />`:'<div style="width:48px;height:48px;border-radius:50%;background:#1a0a0a;display:flex;align-items:center;justify-content:center;color:var(--muted)"><i class="fa-solid fa-user"></i></div>';
+      var badge=c.is_admin?'<span class="badge badge-red">Admin</span>':'<span class="badge badge-muted">User</span>';
+      var date=new Date(c.created_at).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
+      return `<tr>
+        <td>${avatar}</td>
+        <td>${c.name} ${badge}</td>
+        <td style="max-width:300px;word-break:break-word">${c.message}</td>
+        <td style="white-space:nowrap">${date}</td>
+        <td><button class="btn btn-danger btn-sm" onclick="deleteComment(${c.id})"><i class="fa-solid fa-trash"></i> Hapus</button></td>
+      </tr>`;
+    }).join('');
+  }catch(e){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--red);padding:30px">Gagal memuat data.</td></tr>';}
+}
+
+async function deleteComment(id){
+  if(!confirm('Hapus komentar ini?'))return;
+  try{await sbDelete('comments',id);toast('✓ Komentar dihapus.');loadCommentsTable();initDashboard();}
+  catch(e){toast('Gagal hapus: '+e.message,false);}
+}
+
+function openAdminCommentModal(){
+  document.getElementById('admin-comment-msg').value='';
+  openModal('modal-admin-comment');
+}
+
+async function saveAdminComment(){
+  var msg=document.getElementById('admin-comment-msg').value.trim();
+  if(!msg){toast('Pesan tidak boleh kosong.',false);return;}
+  try{
+    await sbPost('comments',{name:'Hizkia Mikayla M.',message:msg,photo_url:null,is_admin:true});
+    toast('✓ Komentar admin diposting!');
+    closeModal('modal-admin-comment');
+    if(document.getElementById('page-comments').classList.contains('active'))loadCommentsTable();
+    initDashboard();
+  }catch(e){toast('Gagal: '+e.message,false);}
+}
+
+// ══════════════════════════════════════════
+// FOTO PROFIL PREVIEW
+// ══════════════════════════════════════════
+function previewAdminPhoto(){
+  var url=document.getElementById('c-profile_photo_url').value;
+  if(!url)return;
+  var wrap=document.getElementById('photo-preview-admin');
+  document.getElementById('photo-preview-img-admin').src=url;
+  wrap.style.display='block';
+}
+</script>
+</body>
+</html>
