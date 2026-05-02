@@ -93,6 +93,13 @@
     .modal-box h3 i{color:var(--red)}
     .modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
 
+    /* ── AUTO LOGOUT WARNING ── */
+    #inactivity-warning{display:none;position:fixed;top:0;left:0;right:0;z-index:99999;background:linear-gradient(90deg,#7a1010,#c0392b);color:#fff;padding:14px 24px;text-align:center;font-size:.92rem;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.5);animation:slideDown .4s ease}
+    @keyframes slideDown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+    #inactivity-warning span{color:#ffd700;font-size:1.05rem;font-weight:800}
+    #inactivity-warning button{margin-left:16px;background:#fff;color:#c0392b;border:none;padding:5px 16px;border-radius:20px;font-weight:700;font-size:.82rem;cursor:pointer;transition:opacity .2s}
+    #inactivity-warning button:hover{opacity:.85}
+
     /* ── RESPONSIVE ── */
     @media(max-width:768px){
       .sidebar{width:100%;height:auto;position:relative}
@@ -320,6 +327,13 @@
   </div>
 </div>
 
+<!-- AUTO LOGOUT WARNING BANNER -->
+<div id="inactivity-warning">
+  <i class="fa-solid fa-triangle-exclamation"></i>
+  Tidak ada aktivitas! Sesi akan otomatis logout dalam <span id="countdown-sec">60</span> detik.
+  <button onclick="resetInactivityTimer()"><i class="fa-solid fa-rotate-left"></i> Tetap Login</button>
+</div>
+
 <!-- TOAST -->
 <div id="toast"></div>
 
@@ -337,6 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin-app').style.display = 'block';
     initDashboard();
+    startInactivityWatcher();
   }
 });
 
@@ -357,6 +372,7 @@ async function doLogin(){
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin-app').style.display = 'block';
     initDashboard();
+    startInactivityWatcher();
   } catch(e) {
     err.textContent = 'Login gagal: Email atau Password salah.';
   }
@@ -367,11 +383,66 @@ async function doLogin(){
 
 function doLogout(){
   sbLogout(); // Hapus token dari browser
+  clearInactivityTimer();
   document.getElementById('admin-app').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('login-email').value = '';
   document.getElementById('login-pass').value = '';
 }
+
+// ══════════════════════════════════════════
+// AUTO LOGOUT SETELAH 10 MENIT TIDAK AKTIF
+// ══════════════════════════════════════════
+var _inactivityTimeout = null;   // timer utama 9 menit
+var _countdownInterval = null;   // hitung mundur 60 detik
+var INACTIVITY_LIMIT = 9 * 60 * 1000; // 9 menit sebelum warning
+var COUNTDOWN_SECS = 60;          // 60 detik warning sebelum logout
+
+function resetInactivityTimer(){
+  // Sembunyikan warning jika sedang tampil
+  document.getElementById('inactivity-warning').style.display = 'none';
+  clearTimeout(_inactivityTimeout);
+  clearInterval(_countdownInterval);
+
+  // Set ulang timer 9 menit
+  _inactivityTimeout = setTimeout(showInactivityWarning, INACTIVITY_LIMIT);
+}
+
+function showInactivityWarning(){
+  var banner = document.getElementById('inactivity-warning');
+  var secEl  = document.getElementById('countdown-sec');
+  var secs   = COUNTDOWN_SECS;
+
+  secEl.textContent = secs;
+  banner.style.display = 'block';
+
+  _countdownInterval = setInterval(function(){
+    secs--;
+    secEl.textContent = secs;
+    if(secs <= 0){
+      clearInterval(_countdownInterval);
+      banner.style.display = 'none';
+      toast('⏱ Sesi berakhir karena tidak ada aktivitas.', false);
+      setTimeout(doLogout, 1500);
+    }
+  }, 1000);
+}
+
+function clearInactivityTimer(){
+  clearTimeout(_inactivityTimeout);
+  clearInterval(_countdownInterval);
+  document.getElementById('inactivity-warning').style.display = 'none';
+}
+
+function startInactivityWatcher(){
+  // Event yang dianggap sebagai "aktivitas"
+  ['mousemove','mousedown','keydown','touchstart','scroll','click'].forEach(function(evt){
+    document.addEventListener(evt, resetInactivityTimer, { passive: true });
+  });
+  resetInactivityTimer(); // Mulai timer pertama kali
+}
+
+
 
 // ══════════════════════════════════════════
 // NAVIGASI HALAMAN
