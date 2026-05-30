@@ -517,6 +517,42 @@
         border-color: var(--red) !important;
       }
 
+      /* ── COMMENT TABS ── */
+      .cm-tab {
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        transition: all 0.2s;
+      }
+      .cm-tab:hover {
+        color: var(--text);
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+      .cm-tab.active-tab {
+        background: var(--red);
+        color: #fff;
+        border-color: var(--red);
+      }
+
+      /* ── COMMENT CARD ROW ── */
+      .comment-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 16px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        transition: background 0.15s;
+      }
+      .comment-card:last-child {
+        border-bottom: none;
+      }
+      .comment-card:hover {
+        background: rgba(255, 255, 255, 0.025);
+      }
+      .comment-card.is-pinned {
+        border-left: 3px solid var(--yellow);
+      }
+
       /* ── RESPONSIVE ── */
       @media (max-width: 768px) {
         .sidebar {
@@ -590,112 +626,417 @@
         <!-- ── DASHBOARD ── -->
         <div class="page active" id="page-home">
           <!-- Header -->
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px">
+          <div
+            style="
+              display: flex;
+              align-items: flex-start;
+              justify-content: space-between;
+              margin-bottom: 28px;
+              flex-wrap: wrap;
+              gap: 12px;
+            "
+          >
             <div>
-              <div class="page-title" style="margin-bottom:4px"><i class="fa-solid fa-gauge"></i> Dashboard</div>
-              <p style="color:var(--muted);font-size:0.9rem">Welcome back! Here's your portfolio overview.</p>
+              <div class="page-title" style="margin-bottom: 4px">
+                <i class="fa-solid fa-gauge"></i> Dashboard
+              </div>
+              <p style="color: var(--muted); font-size: 0.9rem">
+                Welcome back! Here's your portfolio overview.
+              </p>
             </div>
-            <div style="display:flex;align-items:center;gap:8px;color:var(--muted);font-size:0.85rem;background:var(--panel);border:1px solid var(--border);padding:8px 14px;border-radius:8px;white-space:nowrap">
-              <i class="fa-regular fa-calendar" style="color:var(--red)"></i>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                color: var(--muted);
+                font-size: 0.85rem;
+                background: var(--panel);
+                border: 1px solid var(--border);
+                padding: 8px 14px;
+                border-radius: 8px;
+                white-space: nowrap;
+              "
+            >
+              <i class="fa-regular fa-calendar" style="color: var(--red)"></i>
               <span id="dash-date">—</span>
             </div>
           </div>
 
           <!-- Stat Cards -->
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;margin-bottom:24px">
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+              gap: 16px;
+              margin-bottom: 24px;
+            "
+          >
             <!-- Total Projects -->
-            <div class="panel" style="display:flex;align-items:center;justify-content:space-between;padding:20px 22px">
+            <div
+              class="panel"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 20px 22px;
+              "
+            >
               <div>
-                <div style="color:var(--muted);font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Total Projects</div>
-                <div id="dash-projects" style="font-size:2rem;font-weight:800;line-height:1">—</div>
-                <div style="color:var(--green);font-size:0.75rem;margin-top:6px;display:flex;align-items:center;gap:4px">
-                  <i class="fa-solid fa-arrow-trend-up"></i> +12% from last month
+                <div
+                  style="
+                    color: var(--muted);
+                    font-size: 0.78rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    margin-bottom: 6px;
+                  "
+                >
+                  Total Projects
+                </div>
+                <div
+                  id="dash-projects"
+                  style="font-size: 2rem; font-weight: 800; line-height: 1"
+                >
+                  —
                 </div>
               </div>
-              <div style="width:48px;height:48px;border-radius:10px;background:rgba(255,51,51,0.18);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                <i class="fa-solid fa-folder-open" style="color:var(--red);font-size:1.3rem"></i>
+              <div
+                style="
+                  width: 48px;
+                  height: 48px;
+                  border-radius: 10px;
+                  background: rgba(255, 51, 51, 0.18);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  flex-shrink: 0;
+                "
+              >
+                <i
+                  class="fa-solid fa-folder-open"
+                  style="color: var(--red); font-size: 1.3rem"
+                ></i>
               </div>
             </div>
             <!-- Certificates -->
-            <div class="panel" style="display:flex;align-items:center;justify-content:space-between;padding:20px 22px">
+            <div
+              class="panel"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 20px 22px;
+              "
+            >
               <div>
-                <div style="color:var(--muted);font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Certificates</div>
-                <div id="dash-certs" style="font-size:2rem;font-weight:800;line-height:1">—</div>
-                <div style="color:var(--green);font-size:0.75rem;margin-top:6px;display:flex;align-items:center;gap:4px">
-                  <i class="fa-solid fa-arrow-trend-up"></i> +8% from last month
+                <div
+                  style="
+                    color: var(--muted);
+                    font-size: 0.78rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    margin-bottom: 6px;
+                  "
+                >
+                  Certificates
+                </div>
+                <div
+                  id="dash-certs"
+                  style="font-size: 2rem; font-weight: 800; line-height: 1"
+                >
+                  —
                 </div>
               </div>
-              <div style="width:48px;height:48px;border-radius:10px;background:rgba(74,222,128,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                <i class="fa-solid fa-certificate" style="color:var(--green);font-size:1.3rem"></i>
+              <div
+                style="
+                  width: 48px;
+                  height: 48px;
+                  border-radius: 10px;
+                  background: rgba(74, 222, 128, 0.15);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  flex-shrink: 0;
+                "
+              >
+                <i
+                  class="fa-solid fa-certificate"
+                  style="color: var(--green); font-size: 1.3rem"
+                ></i>
               </div>
             </div>
             <!-- Total Comments -->
-            <div class="panel" style="display:flex;align-items:center;justify-content:space-between;padding:20px 22px">
+            <div
+              class="panel"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 20px 22px;
+              "
+            >
               <div>
-                <div style="color:var(--muted);font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Total Comments</div>
-                <div id="dash-comments" style="font-size:2rem;font-weight:800;line-height:1">—</div>
-                <div style="color:var(--green);font-size:0.75rem;margin-top:6px;display:flex;align-items:center;gap:4px">
-                  <i class="fa-solid fa-arrow-trend-up"></i> +23% from last month
+                <div
+                  style="
+                    color: var(--muted);
+                    font-size: 0.78rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    margin-bottom: 6px;
+                  "
+                >
+                  Total Comments
+                </div>
+                <div
+                  id="dash-comments"
+                  style="font-size: 2rem; font-weight: 800; line-height: 1"
+                >
+                  —
                 </div>
               </div>
-              <div style="width:48px;height:48px;border-radius:10px;background:rgba(255,51,51,0.18);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                <i class="fa-solid fa-comments" style="color:var(--red);font-size:1.3rem"></i>
+              <div
+                style="
+                  width: 48px;
+                  height: 48px;
+                  border-radius: 10px;
+                  background: rgba(255, 51, 51, 0.18);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  flex-shrink: 0;
+                "
+              >
+                <i
+                  class="fa-solid fa-comments"
+                  style="color: var(--red); font-size: 1.3rem"
+                ></i>
               </div>
             </div>
             <!-- Pinned Comments -->
-            <div class="panel" style="display:flex;align-items:center;justify-content:space-between;padding:20px 22px">
+            <div
+              class="panel"
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 20px 22px;
+              "
+            >
               <div>
-                <div style="color:var(--muted);font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Pinned Comments</div>
-                <div id="dash-pinned" style="font-size:2rem;font-weight:800;line-height:1">—</div>
-                <div style="color:var(--muted);font-size:0.75rem;margin-top:6px;display:flex;align-items:center;gap:4px">
+                <div
+                  style="
+                    color: var(--muted);
+                    font-size: 0.78rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    margin-bottom: 6px;
+                  "
+                >
+                  Pinned Comments
+                </div>
+                <div
+                  id="dash-pinned"
+                  style="font-size: 2rem; font-weight: 800; line-height: 1"
+                >
+                  —
+                </div>
+                <div
+                  style="
+                    color: var(--muted);
+                    font-size: 0.75rem;
+                    margin-top: 6px;
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                  "
+                >
                   <i class="fa-solid fa-thumbtack"></i> pinned entries
                 </div>
               </div>
-              <div style="width:48px;height:48px;border-radius:10px;background:rgba(251,191,36,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-                <i class="fa-solid fa-chart-line" style="color:var(--yellow);font-size:1.3rem"></i>
+              <div
+                style="
+                  width: 48px;
+                  height: 48px;
+                  border-radius: 10px;
+                  background: rgba(251, 191, 36, 0.15);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  flex-shrink: 0;
+                "
+              >
+                <i
+                  class="fa-solid fa-chart-line"
+                  style="color: var(--yellow); font-size: 1.3rem"
+                ></i>
               </div>
             </div>
           </div>
 
           <!-- Recent Comments Activity -->
-          <div class="panel" style="margin-bottom:24px">
-            <h3><i class="fa-solid fa-wave-square"></i> Recent Comments Activity</h3>
+          <div class="panel" style="margin-bottom: 24px">
+            <h3>
+              <i class="fa-solid fa-wave-square"></i> Recent Comments Activity
+            </h3>
             <div id="dash-recent-comments">
-              <div style="text-align:center;color:var(--muted);padding:32px 0;font-size:0.88rem">
-                <i class="fa-solid fa-spinner fa-spin" style="margin-bottom:8px;display:block;font-size:1.2rem"></i>
+              <div
+                style="
+                  text-align: center;
+                  color: var(--muted);
+                  padding: 32px 0;
+                  font-size: 0.88rem;
+                "
+              >
+                <i
+                  class="fa-solid fa-spinner fa-spin"
+                  style="margin-bottom: 8px; display: block; font-size: 1.2rem"
+                ></i>
                 Memuat aktivitas terbaru…
               </div>
             </div>
           </div>
 
           <!-- Quick Action Cards -->
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">
-            <div class="panel dash-action-card" onclick="showPageById('page-projects')" style="cursor:pointer;border-color:rgba(138,21,21,0.4);transition:border-color .2s,transform .2s">
-              <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
-                <div style="width:40px;height:40px;border-radius:8px;background:rgba(255,51,51,0.15);display:flex;align-items:center;justify-content:center">
-                  <i class="fa-solid fa-folder-open" style="color:var(--red)"></i>
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+              gap: 16px;
+            "
+          >
+            <div
+              class="panel dash-action-card"
+              onclick="showPageById('page-projects')"
+              style="
+                cursor: pointer;
+                border-color: rgba(138, 21, 21, 0.4);
+                transition:
+                  border-color 0.2s,
+                  transform 0.2s;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 12px;
+                  margin-bottom: 10px;
+                "
+              >
+                <div
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 8px;
+                    background: rgba(255, 51, 51, 0.15);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <i
+                    class="fa-solid fa-folder-open"
+                    style="color: var(--red)"
+                  ></i>
                 </div>
-                <span style="font-weight:700;font-size:1rem">Manage Projects</span>
+                <span style="font-weight: 700; font-size: 1rem"
+                  >Manage Projects</span
+                >
               </div>
-              <p style="color:var(--muted);font-size:0.85rem;margin:0">Add, edit, or remove portfolio projects</p>
+              <p style="color: var(--muted); font-size: 0.85rem; margin: 0">
+                Add, edit, or remove portfolio projects
+              </p>
             </div>
-            <div class="panel dash-action-card" onclick="showPageById('page-certs')" style="cursor:pointer;border-color:rgba(74,222,128,0.2);transition:border-color .2s,transform .2s">
-              <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
-                <div style="width:40px;height:40px;border-radius:8px;background:rgba(74,222,128,0.12);display:flex;align-items:center;justify-content:center">
-                  <i class="fa-solid fa-certificate" style="color:var(--green)"></i>
+            <div
+              class="panel dash-action-card"
+              onclick="showPageById('page-certs')"
+              style="
+                cursor: pointer;
+                border-color: rgba(74, 222, 128, 0.2);
+                transition:
+                  border-color 0.2s,
+                  transform 0.2s;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 12px;
+                  margin-bottom: 10px;
+                "
+              >
+                <div
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 8px;
+                    background: rgba(74, 222, 128, 0.12);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <i
+                    class="fa-solid fa-certificate"
+                    style="color: var(--green)"
+                  ></i>
                 </div>
-                <span style="font-weight:700;font-size:1rem">Manage Certificates</span>
+                <span style="font-weight: 700; font-size: 1rem"
+                  >Manage Certificates</span
+                >
               </div>
-              <p style="color:var(--muted);font-size:0.85rem;margin:0">Upload and organize certificates</p>
+              <p style="color: var(--muted); font-size: 0.85rem; margin: 0">
+                Upload and organize certificates
+              </p>
             </div>
-            <div class="panel dash-action-card" onclick="showPageById('page-comments')" style="cursor:pointer;border-color:rgba(255,51,51,0.4);transition:border-color .2s,transform .2s">
-              <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
-                <div style="width:40px;height:40px;border-radius:8px;background:rgba(255,51,51,0.15);display:flex;align-items:center;justify-content:center">
-                  <i class="fa-solid fa-comment-slash" style="color:var(--red)"></i>
+            <div
+              class="panel dash-action-card"
+              onclick="showPageById('page-comments')"
+              style="
+                cursor: pointer;
+                border-color: rgba(255, 51, 51, 0.4);
+                transition:
+                  border-color 0.2s,
+                  transform 0.2s;
+              "
+            >
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 12px;
+                  margin-bottom: 10px;
+                "
+              >
+                <div
+                  style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 8px;
+                    background: rgba(255, 51, 51, 0.15);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  <i
+                    class="fa-solid fa-comment-slash"
+                    style="color: var(--red)"
+                  ></i>
                 </div>
-                <span style="font-weight:700;font-size:1rem">Moderate Comments</span>
+                <span style="font-weight: 700; font-size: 1rem"
+                  >Moderate Comments</span
+                >
               </div>
-              <p style="color:var(--muted);font-size:0.85rem;margin:0">Pin, delete, or manage comments</p>
+              <p style="color: var(--muted); font-size: 0.85rem; margin: 0">
+                Pin, delete, or manage comments
+              </p>
             </div>
           </div>
         </div>
@@ -881,41 +1222,283 @@
 
         <!-- ── KOMENTAR ── -->
         <div class="page" id="page-comments">
-          <div class="page-title">
-            <i class="fa-solid fa-comments"></i> Manajemen Komentar
+          <!-- Header -->
+          <div
+            style="
+              display: flex;
+              align-items: flex-start;
+              justify-content: space-between;
+              margin-bottom: 24px;
+              flex-wrap: wrap;
+              gap: 12px;
+            "
+          >
+            <div>
+              <div class="page-title" style="margin-bottom: 4px">
+                <i class="fa-solid fa-comments"></i> Comments Management
+              </div>
+              <p style="color: var(--muted); font-size: 0.9rem">
+                Moderate and manage portfolio comments
+              </p>
+            </div>
+            <div
+              style="
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                flex-wrap: wrap;
+              "
+            >
+              <button class="btn btn-outline" onclick="refreshComments()">
+                <i class="fa-solid fa-rotate-right"></i> Refresh
+              </button>
+              <button class="btn btn-primary" onclick="openAdminCommentModal()">
+                <i class="fa-solid fa-plus"></i> Tambah Komentar Admin
+              </button>
+            </div>
           </div>
-          <div style="display: flex; gap: 10px; margin-bottom: 20px">
-            <button class="btn btn-primary" onclick="openAdminCommentModal()">
-              <i class="fa-solid fa-plus"></i> Tambah Komentar Admin
-            </button>
+
+          <!-- Stat mini-cards -->
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+              gap: 14px;
+              margin-bottom: 20px;
+            "
+          >
+            <div
+              class="panel"
+              style="
+                padding: 16px 20px;
+                display: flex;
+                align-items: center;
+                gap: 14px;
+              "
+            >
+              <div
+                style="
+                  width: 40px;
+                  height: 40px;
+                  border-radius: 8px;
+                  background: rgba(255, 51, 51, 0.15);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  flex-shrink: 0;
+                "
+              >
+                <i
+                  class="fa-solid fa-comment-dots"
+                  style="color: var(--red)"
+                ></i>
+              </div>
+              <div>
+                <div
+                  style="
+                    color: var(--muted);
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.4px;
+                  "
+                >
+                  Total Comments
+                </div>
+                <div
+                  id="cm-total"
+                  style="font-size: 1.6rem; font-weight: 800; line-height: 1.2"
+                >
+                  0
+                </div>
+              </div>
+            </div>
+            <div
+              class="panel"
+              style="
+                padding: 16px 20px;
+                display: flex;
+                align-items: center;
+                gap: 14px;
+              "
+            >
+              <div
+                style="
+                  width: 40px;
+                  height: 40px;
+                  border-radius: 8px;
+                  background: rgba(251, 191, 36, 0.15);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  flex-shrink: 0;
+                "
+              >
+                <i
+                  class="fa-solid fa-thumbtack"
+                  style="color: var(--yellow)"
+                ></i>
+              </div>
+              <div>
+                <div
+                  style="
+                    color: var(--muted);
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.4px;
+                  "
+                >
+                  Pinned
+                </div>
+                <div
+                  id="cm-pinned"
+                  style="font-size: 1.6rem; font-weight: 800; line-height: 1.2"
+                >
+                  0
+                </div>
+              </div>
+            </div>
+            <div
+              class="panel"
+              style="
+                padding: 16px 20px;
+                display: flex;
+                align-items: center;
+                gap: 14px;
+              "
+            >
+              <div
+                style="
+                  width: 40px;
+                  height: 40px;
+                  border-radius: 8px;
+                  background: rgba(74, 222, 128, 0.12);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  flex-shrink: 0;
+                "
+              >
+                <i class="fa-solid fa-comment" style="color: var(--green)"></i>
+              </div>
+              <div>
+                <div
+                  style="
+                    color: var(--muted);
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.4px;
+                  "
+                >
+                  Regular
+                </div>
+                <div
+                  id="cm-regular"
+                  style="font-size: 1.6rem; font-weight: 800; line-height: 1.2"
+                >
+                  0
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="panel">
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Foto</th>
-                    <th>Nama</th>
-                    <th>Pesan</th>
-                    <th>Tanggal</th>
-                    <th>Aksi</th>
-                  </tr>
-                </thead>
-                <tbody id="comments-tbody">
-                  <tr>
-                    <td
-                      colspan="5"
-                      style="
-                        text-align: center;
-                        color: var(--muted);
-                        padding: 30px;
-                      "
-                    >
-                      <i class="fa-solid fa-spinner fa-spin"></i> Memuat...
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+
+          <!-- Search + Filter -->
+          <div class="panel" style="padding: 14px 18px; margin-bottom: 20px">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                flex-wrap: wrap;
+              "
+            >
+              <!-- Search -->
+              <div
+                style="
+                  flex: 1;
+                  min-width: 200px;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  background: rgba(255, 255, 255, 0.04);
+                  border: 1px solid var(--border);
+                  border-radius: 8px;
+                  padding: 9px 14px;
+                "
+              >
+                <i
+                  class="fa-solid fa-magnifying-glass"
+                  style="
+                    color: var(--muted);
+                    font-size: 0.85rem;
+                    flex-shrink: 0;
+                  "
+                ></i>
+                <input
+                  type="text"
+                  id="cm-search"
+                  placeholder="Search by name or content..."
+                  style="
+                    background: transparent;
+                    border: none;
+                    color: var(--text);
+                    font-size: 0.88rem;
+                    outline: none;
+                    width: 100%;
+                    font-family: inherit;
+                  "
+                  oninput="filterComments()"
+                />
+              </div>
+              <!-- Filter tabs -->
+              <div style="display: flex; gap: 6px; flex-shrink: 0">
+                <button
+                  id="cm-tab-all"
+                  class="btn btn-sm cm-tab active-tab"
+                  onclick="setCommentTab('all')"
+                >
+                  All
+                </button>
+                <button
+                  id="cm-tab-pinned"
+                  class="btn btn-sm cm-tab"
+                  onclick="setCommentTab('pinned')"
+                >
+                  <i
+                    class="fa-solid fa-thumbtack"
+                    style="font-size: 0.7rem"
+                  ></i>
+                  Pinned
+                </button>
+                <button
+                  id="cm-tab-regular"
+                  class="btn btn-sm cm-tab"
+                  onclick="setCommentTab('regular')"
+                >
+                  Regular
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comments list -->
+          <div class="panel" style="padding: 0; overflow: hidden">
+            <div id="comments-list-wrap">
+              <div
+                style="
+                  text-align: center;
+                  color: var(--muted);
+                  padding: 48px 20px;
+                "
+              >
+                <i
+                  class="fa-solid fa-spinner fa-spin"
+                  style="font-size: 1.4rem; display: block; margin-bottom: 10px"
+                ></i>
+                Memuat komentar...
+              </div>
             </div>
           </div>
         </div>
@@ -1287,12 +1870,19 @@
 
       // Helper: navigasi tanpa event (dipakai dari quick-action cards)
       function showPageById(id) {
-        document.querySelectorAll(".page").forEach(function(p) { p.classList.remove("active"); });
-        document.querySelectorAll(".nav-item").forEach(function(n) { n.classList.remove("active"); });
+        document.querySelectorAll(".page").forEach(function (p) {
+          p.classList.remove("active");
+        });
+        document.querySelectorAll(".nav-item").forEach(function (n) {
+          n.classList.remove("active");
+        });
         document.getElementById(id).classList.add("active");
         // Tandai nav-item yang sesuai
-        document.querySelectorAll(".nav-item").forEach(function(n) {
-          if (n.getAttribute("onclick") && n.getAttribute("onclick").indexOf(id) !== -1) {
+        document.querySelectorAll(".nav-item").forEach(function (n) {
+          if (
+            n.getAttribute("onclick") &&
+            n.getAttribute("onclick").indexOf(id) !== -1
+          ) {
             n.classList.add("active");
           }
         });
@@ -1348,53 +1938,91 @@
         var dateEl = document.getElementById("dash-date");
         if (dateEl) {
           dateEl.textContent = new Date().toLocaleDateString("en-US", {
-            weekday: "long", year: "numeric", month: "long", day: "numeric"
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           });
         }
         try {
-          const [proj, certs, comments, pinned, recentComments] = await Promise.all([
-            sbGet("projects", "select=id"),
-            sbGet("certificates", "select=id"),
-            sbGet("comments", "select=id"),
-            sbGet("comments", "select=id&is_admin=eq.true"),
-            sbGet("comments", "order=created_at.desc&limit=5&select=id,name,message,created_at,is_admin,photo_url"),
-          ]);
-          document.getElementById("dash-projects").textContent = proj ? proj.length : 0;
-          document.getElementById("dash-certs").textContent = certs ? certs.length : 0;
-          document.getElementById("dash-comments").textContent = comments ? comments.length : 0;
-          document.getElementById("dash-pinned").textContent = pinned ? pinned.length : 0;
+          const [proj, certs, comments, pinned, recentComments] =
+            await Promise.all([
+              sbGet("projects", "select=id"),
+              sbGet("certificates", "select=id"),
+              sbGet("comments", "select=id"),
+              sbGet("comments", "select=id&is_pinned=eq.true"),
+              sbGet(
+                "comments",
+                "order=created_at.desc&limit=3&select=id,name,message,created_at,is_admin,photo_url",
+              ),
+            ]);
+          document.getElementById("dash-projects").textContent = proj
+            ? proj.length
+            : 0;
+          document.getElementById("dash-certs").textContent = certs
+            ? certs.length
+            : 0;
+          document.getElementById("dash-comments").textContent = comments
+            ? comments.length
+            : 0;
+          document.getElementById("dash-pinned").textContent = pinned
+            ? pinned.length
+            : 0;
 
           // Recent Comments Activity
           var rcEl = document.getElementById("dash-recent-comments");
           if (rcEl) {
             if (!recentComments || !recentComments.length) {
-              rcEl.innerHTML = '<div style="text-align:center;color:var(--muted);padding:32px 0;font-size:0.88rem"><i class="fa-regular fa-comment-dots" style="display:block;font-size:1.8rem;margin-bottom:10px;opacity:.4"></i>No recent activity</div>';
+              rcEl.innerHTML =
+                '<div style="text-align:center;color:var(--muted);padding:32px 0;font-size:0.88rem"><i class="fa-regular fa-comment-dots" style="display:block;font-size:1.8rem;margin-bottom:10px;opacity:.4"></i>No recent activity</div>';
             } else {
-              rcEl.innerHTML = recentComments.map(function(c) {
-                var avatar = c.photo_url
-                  ? '<img src="' + c.photo_url + '" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid var(--border);flex-shrink:0" />'
-                  : '<div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)"><i class="fa-solid fa-user" style="font-size:.8rem"></i></div>';
-                var badge = c.is_admin
-                  ? '<span class="badge badge-red" style="font-size:.65rem;padding:2px 8px">Admin</span>'
-                  : '<span class="badge badge-muted" style="font-size:.65rem;padding:2px 8px">User</span>';
-                var date = new Date(c.created_at).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
-                var msg = c.message.length > 80 ? c.message.slice(0, 80) + '...' : c.message;
-                return '<div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05)">'
-                  + avatar
-                  + '<div style="flex:1;min-width:0">'
-                  + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap">'
-                  + '<span style="font-weight:600;font-size:0.88rem">' + c.name + '</span>' + badge
-                  + '<span style="color:var(--muted);font-size:0.75rem;margin-left:auto;white-space:nowrap">' + date + '</span>'
-                  + '</div>'
-                  + '<p style="color:var(--muted);font-size:0.83rem;margin:0;line-height:1.5;word-break:break-word">' + msg + '</p>'
-                  + '</div></div>';
-              }).join('')
-              + '<div style="text-align:right;margin-top:12px">'
-              + '<button class="btn btn-outline btn-sm" onclick="showPageById(\'page-comments\')"><i class="fa-solid fa-arrow-right"></i> Lihat Semua</button>'
-              + '</div>';
+              rcEl.innerHTML =
+                recentComments
+                  .map(function (c) {
+                    var avatar = c.photo_url
+                      ? '<img src="' +
+                        c.photo_url +
+                        '" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid var(--border);flex-shrink:0" />'
+                      : '<div style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)"><i class="fa-solid fa-user" style="font-size:.8rem"></i></div>';
+                    var badge = c.is_admin
+                      ? '<span class="badge badge-red" style="font-size:.65rem;padding:2px 8px">Admin</span>'
+                      : '<span class="badge badge-muted" style="font-size:.65rem;padding:2px 8px">User</span>';
+                    var date = new Date(c.created_at).toLocaleDateString(
+                      "id-ID",
+                      { day: "numeric", month: "short", year: "numeric" },
+                    );
+                    var msg =
+                      c.message.length > 80
+                        ? c.message.slice(0, 80) + "..."
+                        : c.message;
+                    return (
+                      '<div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05)">' +
+                      avatar +
+                      '<div style="flex:1;min-width:0">' +
+                      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap">' +
+                      '<span style="font-weight:600;font-size:0.88rem">' +
+                      c.name +
+                      "</span>" +
+                      badge +
+                      '<span style="color:var(--muted);font-size:0.75rem;margin-left:auto;white-space:nowrap">' +
+                      date +
+                      "</span>" +
+                      "</div>" +
+                      '<p style="color:var(--muted);font-size:0.83rem;margin:0;line-height:1.5;word-break:break-word">' +
+                      msg +
+                      "</p>" +
+                      "</div></div>"
+                    );
+                  })
+                  .join("") +
+                '<div style="text-align:right;margin-top:12px">' +
+                '<button class="btn btn-outline btn-sm" onclick="showPageById(\'page-comments\')"><i class="fa-solid fa-arrow-right"></i> Lihat Semua</button>' +
+                "</div>";
             }
           }
-        } catch (e) { console.error("Dashboard init error:", e); }
+        } catch (e) {
+          console.error("Dashboard init error:", e);
+        }
       }
 
       // ══════════════════════════════════════════
@@ -1657,42 +2285,176 @@
       // ══════════════════════════════════════════
       // COMMENTS
       // ══════════════════════════════════════════
+      // ══════════════════════════════════════════
+      // COMMENTS — state
+      // ══════════════════════════════════════════
+      var _allComments = [];
+      var _commentTab = "all"; // 'all' | 'pinned' | 'regular'
+
       async function loadCommentsTable() {
-        var tbody = document.getElementById("comments-tbody");
-        tbody.innerHTML =
-          '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:30px"><i class="fa-solid fa-spinner fa-spin"></i> Memuat...</td></tr>';
+        var wrap = document.getElementById("comments-list-wrap");
+        if (wrap)
+          wrap.innerHTML =
+            '<div style="text-align:center;color:var(--muted);padding:48px 20px"><i class="fa-solid fa-spinner fa-spin" style="font-size:1.4rem;display:block;margin-bottom:10px"></i>Memuat komentar...</div>';
         try {
-          var data = await sbGet("comments", "order=created_at.desc");
-          if (!data || !data.length) {
-            tbody.innerHTML =
-              '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:30px">Belum ada komentar.</td></tr>';
-            return;
-          }
-          tbody.innerHTML = data
-            .map((c) => {
-              var avatar = c.photo_url
-                ? `<img src="${c.photo_url}" />`
-                : '<div style="width:48px;height:48px;border-radius:50%;background:#1a0a0a;display:flex;align-items:center;justify-content:center;color:var(--muted)"><i class="fa-solid fa-user"></i></div>';
-              var badge = c.is_admin
-                ? '<span class="badge badge-red">Admin</span>'
-                : '<span class="badge badge-muted">User</span>';
-              var date = new Date(c.created_at).toLocaleDateString("id-ID", {
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              });
-              return `<tr>
-        <td>${avatar}</td>
-        <td>${c.name} ${badge}</td>
-        <td style="max-width:300px;word-break:break-word">${c.message}</td>
-        <td style="white-space:nowrap">${date}</td>
-        <td><button class="btn btn-danger btn-sm" onclick="deleteComment(${c.id})"><i class="fa-solid fa-trash"></i> Hapus</button></td>
-      </tr>`;
-            })
-            .join("");
+          _allComments = await sbGet("comments", "order=created_at.desc");
+          if (!_allComments) _allComments = [];
+          updateCommentStats();
+          renderComments();
         } catch (e) {
-          tbody.innerHTML =
-            '<tr><td colspan="5" style="text-align:center;color:var(--red);padding:30px">Gagal memuat data.</td></tr>';
+          if (wrap)
+            wrap.innerHTML =
+              '<div style="text-align:center;color:var(--red);padding:48px 20px"><i class="fa-solid fa-triangle-exclamation" style="display:block;font-size:1.4rem;margin-bottom:8px"></i>Gagal memuat data.</div>';
+        }
+      }
+
+      function updateCommentStats() {
+        var total = _allComments.length;
+        var pinned = _allComments.filter(function (c) {
+          return c.is_pinned;
+        }).length;
+        var regular = total - pinned;
+        var el = document.getElementById("cm-total");
+        if (el) el.textContent = total;
+        el = document.getElementById("cm-pinned");
+        if (el) el.textContent = pinned;
+        el = document.getElementById("cm-regular");
+        if (el) el.textContent = regular;
+      }
+
+      function setCommentTab(tab) {
+        _commentTab = tab;
+        ["all", "pinned", "regular"].forEach(function (t) {
+          var btn = document.getElementById("cm-tab-" + t);
+          if (btn) btn.classList.toggle("active-tab", t === tab);
+        });
+        renderComments();
+      }
+
+      function filterComments() {
+        renderComments();
+      }
+
+      function renderComments() {
+        var search = (document.getElementById("cm-search") || {}).value || "";
+        search = search.toLowerCase();
+        var list = _allComments.filter(function (c) {
+          if (_commentTab === "pinned" && !c.is_pinned) return false;
+          if (_commentTab === "regular" && c.is_pinned) return false;
+          if (search) {
+            var inName = c.name && c.name.toLowerCase().indexOf(search) !== -1;
+            var inMsg =
+              c.message && c.message.toLowerCase().indexOf(search) !== -1;
+            if (!inName && !inMsg) return false;
+          }
+          return true;
+        });
+
+        var wrap = document.getElementById("comments-list-wrap");
+        if (!wrap) return;
+
+        if (!list.length) {
+          wrap.innerHTML =
+            '<div style="text-align:center;color:var(--muted);padding:56px 20px">' +
+            '<i class="fa-regular fa-comment-dots" style="font-size:2.5rem;display:block;margin-bottom:12px;opacity:.3"></i>' +
+            '<span style="font-size:.95rem">No comments found</span></div>';
+          return;
+        }
+
+        wrap.innerHTML = list
+          .map(function (c) {
+            var avatar = c.photo_url
+              ? '<img src="' +
+                c.photo_url +
+                '" style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:1px solid var(--border);flex-shrink:0" />'
+              : '<div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted)"><i class="fa-solid fa-user"></i></div>';
+            var adminBadge = c.is_admin
+              ? '<span class="badge badge-red" style="font-size:.65rem">Admin</span>'
+              : '<span class="badge badge-muted" style="font-size:.65rem">User</span>';
+            var pinnedBadge = c.is_pinned
+              ? '<span class="badge" style="font-size:.65rem;background:rgba(251,191,36,0.15);color:var(--yellow)"><i class="fa-solid fa-thumbtack" style="font-size:.6rem"></i> Pinned</span>'
+              : "";
+            var date = new Date(c.created_at).toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            });
+            var pinBtnLabel = c.is_pinned
+              ? '<i class="fa-solid fa-thumbtack-slash"></i>'
+              : '<i class="fa-solid fa-thumbtack"></i>';
+            var pinBtnTitle = c.is_pinned ? "Unpin" : "Pin";
+            var pinBtnStyle = c.is_pinned
+              ? "background:rgba(251,191,36,0.18);color:var(--yellow);border:1px solid rgba(251,191,36,0.3)"
+              : "background:transparent;color:var(--muted);border:1px solid var(--border)";
+
+            return (
+              '<div class="comment-card' +
+              (c.is_pinned ? " is-pinned" : "") +
+              '">' +
+              avatar +
+              '<div style="flex:1;min-width:0">' +
+              '<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap">' +
+              '<span style="font-weight:700;font-size:.9rem">' +
+              (c.name || "—") +
+              "</span>" +
+              adminBadge +
+              pinnedBadge +
+              '<span style="color:var(--muted);font-size:.75rem;margin-left:auto;white-space:nowrap">' +
+              date +
+              "</span>" +
+              "</div>" +
+              '<p style="color:var(--muted);font-size:.85rem;margin:0;line-height:1.6;word-break:break-word">' +
+              (c.message || "") +
+              "</p>" +
+              "</div>" +
+              '<div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">' +
+              '<button class="btn btn-sm" style="' +
+              pinBtnStyle +
+              '" title="' +
+              pinBtnTitle +
+              '" onclick="togglePin(' +
+              c.id +
+              "," +
+              (c.is_pinned ? "true" : "false") +
+              ')">' +
+              pinBtnLabel +
+              "</button>" +
+              '<button class="btn btn-danger btn-sm" title="Hapus" onclick="deleteComment(' +
+              c.id +
+              ')"><i class="fa-solid fa-trash"></i></button>' +
+              "</div>" +
+              "</div>"
+            );
+          })
+          .join("");
+      }
+
+      function refreshComments() {
+        var search = document.getElementById("cm-search");
+        if (search) search.value = "";
+        _commentTab = "all";
+        ["all", "pinned", "regular"].forEach(function (t) {
+          var btn = document.getElementById("cm-tab-" + t);
+          if (btn) btn.classList.toggle("active-tab", t === "all");
+        });
+        loadCommentsTable();
+      }
+
+      async function togglePin(id, currentlyPinned) {
+        try {
+          await sbPatch("comments", id, { is_pinned: !currentlyPinned });
+          var c = _allComments.find(function (x) {
+            return x.id === id;
+          });
+          if (c) c.is_pinned = !currentlyPinned;
+          updateCommentStats();
+          renderComments();
+          initDashboard();
+          toast(
+            currentlyPinned ? "✓ Komentar di-unpin." : "✓ Komentar di-pin!",
+          );
+        } catch (e) {
+          toast("Gagal: " + e.message, false);
         }
       }
 
@@ -1700,9 +2462,13 @@
         if (!confirm("Hapus komentar ini?")) return;
         try {
           await sbDelete("comments", id);
-          toast("✓ Komentar dihapus.");
-          loadCommentsTable();
+          _allComments = _allComments.filter(function (c) {
+            return c.id !== id;
+          });
+          updateCommentStats();
+          renderComments();
           initDashboard();
+          toast("✓ Komentar dihapus.");
         } catch (e) {
           toast("Gagal hapus: " + e.message, false);
         }
